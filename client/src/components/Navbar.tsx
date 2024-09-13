@@ -1,4 +1,4 @@
-import { Lamp, Link, Loader2, Menu, Moon, ShoppingCart, Sun } from "lucide-react"
+import { Lamp,  Loader2, Menu, Moon, ShoppingCart, Sun } from "lucide-react"
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "./ui/menubar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
@@ -8,6 +8,7 @@ import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHe
 import { Label } from "./ui/label"; // Adjust the path according to your project structure
 
 import { Input } from "./ui/input";
+import { Link } from "react-router-dom";
 
 
 const Navbar = () => {
@@ -90,7 +91,7 @@ const Navbar = () => {
             
         </div>
         <div className="md:hidden lg:hidden">
-            //mobile responsive
+          
             <MobileNavbar/>
 
         </div>
@@ -132,6 +133,21 @@ const MobileNavbar=()=>{
           </div>
         </div>
         <SheetFooter>
+            {/* {
+                user ?(
+                   <>
+                   <div className="flex flex-row items-center gap-2">
+                    <Avatar>
+                        <AvatarImage/>
+                        <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                   </div>
+                   </> 
+                ):(
+
+                    <Button>logout</Button>
+                )
+            } */}
           <SheetClose asChild>
             <Button type="submit">Save changes</Button>
           </SheetClose>
