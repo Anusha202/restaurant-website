@@ -4,11 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react"
-import EditMenu from "./EditMenu";
+// import EditMenu from "./EditMenu";
 
 
 const AddMenu = () => {
     const [open, setOpen] = useState<boolean>(false);
+    // const[SelectedMenu,setSelectedMenu]=useState<any>();
     const loading = false;
     return (
         <div className="max-w-6xl mx-auto my-10">
@@ -87,7 +88,7 @@ const AddMenu = () => {
                 </div>
 
             </div>
-            <EditMenu/>
+            {/* <EditMenu selectedMenu ={selectedMenu}/> */}
 
 
         </div>
