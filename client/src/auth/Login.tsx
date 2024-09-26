@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 
 import { Loader, Loader2, LockKeyhole, Mail } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { LoginInputState, userLoginSchema } from "@/schema/userSchema";
+import { useUserStore } from "@/store/useUserStore";
 
 // type loginInputState={
 //     email:string;
@@ -18,12 +19,15 @@ const Login = () => {
         password:"",
     });
     const [errors,setErrors]=useState<Partial<LoginInputState>>({});
+const {loading,login}=useUserStore();
+const navigate=useNavigate();
+
     const changeEventHandler=(e:ChangeEvent<HTMLInputElement>)=>{
         const{name,value}=e.target;
         setInput({...input,[name]:value});
     }
 
-    const loginSubmitHandler =(e:FormEvent)=>{
+    const loginSubmitHandler =async(e:FormEvent)=>{
         e.preventDefault();//no page refreshing
         const result=userLoginSchema.safeParse(input);
         if(!result.success){
@@ -31,10 +35,14 @@ const Login = () => {
             setErrors(fieldErrors as Partial<LoginInputState>);
             return;
         }
-        console.log(input);
+        try{
+            await login(input);
+            navigate("/")
+        }catch(error){
+            console.log(error);
+        }
+     
     }
-
-    const loading =false;
 
 
     return (

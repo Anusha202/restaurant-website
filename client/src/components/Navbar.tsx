@@ -8,14 +8,14 @@ import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHe
 
 import { Button } from "./ui/button";
 import { Separator } from "@radix-ui/react-separator";
-import { useCartStore } from "@/store/useCartStore";
+
 
 
 
 const Navbar = () => {
     const admin = true;
     const loading = false;
-    const {count,increment}=useCartStore();
+   
     return (
         <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between h-14">
@@ -91,7 +91,7 @@ const Navbar = () => {
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />Please Wait
                                     </Button>
                                 ) : (
-                                    <Button  onClick={increment} className="bg-orange-500 hover:bg-hoverOrange">Logout</Button>
+                                    <Button className="bg-orange-500 hover:bg-hoverOrange">Logout</Button>
                                 )
                             }
                         </div>
