@@ -2,8 +2,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { restaurantFromSchema } from "@/schema/restaurantSchema";
+import { useRestaurantStore } from "@/store/useRestaurantStore";
 import { Loader2 } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 
 const Restaurant = () => {
@@ -16,11 +17,12 @@ const Restaurant = () => {
         imageFile: undefined
     });
     const [errors, setErrors] = useState<Partial<restaurantFromSchema>>({});
+    const { loading, restaurant, updateRestaurant, createRestaurant, getRestaurant } = useRestaurantStore();
     const changeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type } = e.target;
         setInput({ ...input, [name]: type == 'number' ? Number(value) : value });
     };
-    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+    const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const result = restaurantFromSchema.safeParse(input);
@@ -30,12 +32,53 @@ const Restaurant = () => {
             return;
         }
 
+        try {
+            const formData = new FormData();
+            formData.append("restaurantName", input.restaurantName);
+            formData.append("city", input.city);
+            formData.append("country", input.country);
+            formData.append("deliveryTime", input.deliveryTime.toString());
+            formData.append("cuisines", JSON.stringify(input.cuisines));
 
-        console.log(input);
-    }
+            if (input.imageFile) {
+                formData.append("imageFile", input.imageFile);
+            }
+            if (restaurant) {
+                //update
+                await updateRestaurant(formData);
 
-    const loading = false;
-    const restaurantHai = false;
+            } else {
+                //create
+                await createRestaurant(formData);
+            }
+
+
+        } catch (error) {
+            console.log(error);
+        }
+
+
+    };
+
+    useEffect(() => {
+        const fetchRestaurant = async () => {
+            await getRestaurant();
+            setInput({
+                restaurantName: restaurant.restaurantName || "",
+                city: restaurant.city || "",
+                country: restaurant.country || "",
+                deliveryTime: restaurant.delivertTime || 0,
+                cuisines: restaurant.cuisines ? restaurant.cuisines.map((cuisine: string) => cuisine) : [],
+                imageFile: undefined
+
+            });
+        };
+        fetchRestaurant();
+        console.log(restaurant);
+    },[]);
+
+
+
 
     return (
         <div className="max-w-6xl mx-auto my-10">
@@ -74,7 +117,7 @@ const Restaurant = () => {
                             </div>
                             <div>
                                 <Label>Upload Restaurant Banner</Label>
-                                <Input onChange={(e)=>setInput({...input,imageFile:e.target.files?.[0] || undefined})} type="file" name="imageFile" accept="image/*" />
+                                <Input onChange={(e) => setInput({ ...input, imageFile: e.target.files?.[0] || undefined })} type="file" name="imageFile" accept="image/*" />
                                 {errors && <span className="text-xs text-red-600 font-medium">{errors.imageFile?.name || "image file is required"}</span>}
                             </div>
 
@@ -89,7 +132,7 @@ const Restaurant = () => {
                                     </Button>
                                 ) : (
                                     <Button className="bg-orange-500 hover:bg-orange-500">
-                                        {restaurantHai ? 'Update your restaurant' : "Add new restaurant"}</Button>
+                                        {restaurant ? 'Update your restaurant' : "Add new restaurant"}</Button>
                                 )
                             }
 
