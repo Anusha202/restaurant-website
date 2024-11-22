@@ -90,7 +90,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
             });
         }
         user.isVerified = true;
-        user.verificationToken ;
+        user.verificationToken;
         user.verificationTokenExpiresAt = undefined
         await user.save();
 

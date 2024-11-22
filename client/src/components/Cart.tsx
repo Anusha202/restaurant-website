@@ -40,7 +40,6 @@ const Cart = () => {
                         <TableCell>
                             <div className="w-fit flex items-center rounded-full border border-gray-100 dark:border-gray-800 shadow-md ">
                                 <Button variant={"outline"} size={'icon'} className="rounded-full bg-gray-200"><Minus /></Button>
-
                                 <Button size={'icon'} className="font-bold border-none" disabled variant={'outline'}>1</Button>
                                 <Button size={'icon'} className="rounded-full bg-orange-500 hover:bg-orange-500 " variant={'outline'}><Plus /></Button>
                             </div>
